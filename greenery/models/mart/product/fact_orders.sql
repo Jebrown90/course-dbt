@@ -4,6 +4,7 @@ select
     o.order_id
     , o.promo_id
     , o.created_at
+    , o.address_id
     , p.price
     , p.name
     , po.discount
