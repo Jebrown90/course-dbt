@@ -1,8 +1,4 @@
-{{
-  config(
-    materialized='table'
-  )
-}}
+{{ config (materialized = 'table' )}}
 
 SELECT 
     address_id

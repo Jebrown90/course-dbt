@@ -1,8 +1,4 @@
-{{
-  config(
-    materialized='table'
-  )
-}}
+{{ config (materialized = 'table' )}}
 
 SELECT 
     promo_id
