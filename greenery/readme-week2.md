@@ -91,3 +91,5 @@ QUESTION 1: We added some more models and transformed some data! Now we need to 
 QUESTION 2: Your stakeholders at Greenery want to understand the state of the data each day. Explain how you would ensure these tests are passing regularly and how you would alert stakeholders about bad data getting through.
 
 ## Part 3. dbt Snapshots
+
+QUESTION 1: Which products had their inventory change from week 1 to week 2? 
