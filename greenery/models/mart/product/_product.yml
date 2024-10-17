@@ -1,61 +1,6 @@
 version: 2
 
 models:
-  - name: dim_product
-    description: dimension table for product.
-    columns:
-      - name: product_id
-        tests:
-          - not_null
-          - unique
-
-  - name: dim_users
-    description: dimension table for users.
-    columns:
-      - name: user_id
-        tests:
-          - not_null
-          - unique
-
-  - name: fact_add_to_cart
-    description: table summarizing add to cart events
-    columns:
-      - name: event_id
-        tests:
-          - not_null
-          - unique   
-      - name: session_id
-        tests:
-          - not_null
-      - name: product_id
-        tests:
-          - not_null
-      - name: page_url
-        tests:
-          - not_null 
-      - name: user_id
-        tests:
-          - not_null
-
-  - name: fact_checkout 
-    description: table summarizing checkout events
-    columns:
-      - name: event_id
-        tests:
-          - not_null
-          - unique   
-      - name: session_id
-        tests:
-          - not_null
-      - name: product_id
-        tests:
-          - not_null
-      - name: page_url
-        tests:
-          - not_null 
-      - name: user_id
-        tests:
-          - not_null
 
   - name: fact_page_views
     description: table summarizing page view events
@@ -76,11 +21,3 @@ models:
       - name: user_id
         tests:
           - not_null
-
-  - name: fact_orders
-    description: table summarizing orders
-    columns:
-      - name: order_id
-        tests:
-          - not_null
-          - unique   
