@@ -90,6 +90,21 @@ QUESTION 1: We added some more models and transformed some data! Now we need to 
 
 QUESTION 2: Your stakeholders at Greenery want to understand the state of the data each day. Explain how you would ensure these tests are passing regularly and how you would alert stakeholders about bad data getting through.
 
+
+
 ## Part 3. dbt Snapshots
 
 QUESTION 1: Which products had their inventory change from week 1 to week 2? 
+
+I ran the snapshot (dbt snapshot) and then ran the following script in Snowflake. Any product that appears twice (and has a change in DBT_VALID_FROM date) had a change in inventory. Those were:
+
+1. Pothos - decreased from 40 to 20
+2. Philodendron - decreased from 51 to 25
+3. Monstera - decreased from 77 to 64
+4. String of Pearls - decreased from 58 to 10
+
+select s.*, p.name 
+from inventory_snapshot s
+left join stg_postgres_products p
+    on s.product_id = p.product_id
+order by product_id
