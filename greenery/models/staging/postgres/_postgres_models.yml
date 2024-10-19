@@ -1,46 +1,69 @@
 version: 2
 
 models:
-  - name: stg_addresses
+  - name: stg_postgres_addresses
     description: Information about order addresses. 
     columns:
       - name: address_id
         tests:
           - not_null
-  - name: stg_events
+          - unique
+  - name: stg_postgres_events
     description: Information about events. 
     columns:
       - name: event_id
         tests:
           - not_null
-  - name: stg_order_items
+          - unique
+      - name: session_id
+        tests:
+         - not_null
+      - name: user_id
+        tests:
+         - not_null
+  - name: stg_postgres_order_items
     description: Information about items in orders. 
     columns:
       - name: order_id
         tests:
-          - not_null   
-  - name: stg_orders
+          - not_null  
+      - name: product_id
+        tests:
+          - not_null  
+  - name: stg_postgres_orders
     description: Information about orders. 
     columns:
       - name: order_id
         tests:
           - not_null
-  - name: stg_products
+          - unique
+      - name: user_id
+        tests:
+          - not_null
+      - name: address_id
+        tests:
+          - not_null
+  - name: stg_postgres_products
     description: Information about products. 
     columns:
       - name: product_id
         tests:
-          - not_null      
-  - name: stg_promos
+          - not_null   
+          - unique   
+  - name: stg_postgres_promos
     description: Information about promos. 
     columns:
       - name: promo_id
         tests:
           - not_null 
-  - name: stg_users
+          - unique
+  - name: stg_postgres_users
     description: Information about users. 
     columns:
       - name: user_id
         tests:
           - not_null
-          - unique     
+          - unique  
+      - name: address_id
+        tests:  
+          - not_null   
