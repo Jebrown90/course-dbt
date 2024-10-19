@@ -107,7 +107,7 @@ QUESTION 1: We added some more models and transformed some data! Now we need to 
 1.b. Did you find any “bad” data as you added and ran tests on your models? How did you go about either cleaning the data in the dbt model or adjusting your assumptions/tests?
 1.c. Apply these changes to your github repo
 
-I answer 1.a. and 1.b. below together, and already applied the changed in the repo.
+I answer 1.a., 1.b. and 1.c. below together, and already applied the changed in the repo.
 
 int_sessions_agg: 
     - Session_id: I made an assumption that session_id would be not null and unique (which it should be if we've aggregated everything by session_id), but it was not unique. It's unclear why duplicates exist - it could be a tech output issue - but to remove that issue, I qualified the whole data set so we would only see the earliest output for a given session_id
