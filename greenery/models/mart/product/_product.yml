@@ -2,22 +2,16 @@ version: 2
 
 models:
 
-  - name: fact_page_views
+  - name: fact_user_sessions
     description: table summarizing page view events
     columns:
-      - name: event_id
-        tests:
-          - not_null
-          - unique   
       - name: session_id
         tests:
           - not_null
+          - unique
       - name: product_id
         tests:
           - not_null
-      - name: page_url
-        tests:
-          - not_null 
       - name: user_id
         tests:
           - not_null
