@@ -15,3 +15,14 @@ models:
       - name: user_id
         tests:
           - not_null
+  
+  - name: dim_product
+    description: table summarizing key metrics by product
+    columns:
+      - name: product_id
+        tests:
+          - not_null
+          - unique
+
+  - name: fact_conversion
+    description: table summarizing key conversion metrics (can eventually be broken down by cohorts)
