@@ -23,6 +23,9 @@ with event as
         , coalesce(event.product_id, order_items.product_id) as product_id
         , min(created_at) as session_started_at
         , max(created_at) as session_ended_at
+        {%- for event in events %}
+        , sum(case when event_name = '{{ event }}') then 1 else 0 end) as {{ event }}
+        {%-end for events %}
         , sum(case when event.event_type = 'page_view' then 1 else 0 end) as page_views
         , sum(case when event.event_type = 'add_to_cart' then 1 else 0 end) as add_to_carts
         , sum(case when event.event_type = 'checkout' then 1 else 0 end) as checkouts
