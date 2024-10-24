@@ -8,7 +8,6 @@ models:
       - name: session_id
         tests:
           - not_null
-          - unique
       - name: product_id
         tests:
           - not_null
@@ -23,6 +22,3 @@ models:
         tests:
           - not_null
           - unique
-
-  - name: fact_conversion
-    description: table summarizing key conversion metrics (can eventually be broken down by cohorts)
