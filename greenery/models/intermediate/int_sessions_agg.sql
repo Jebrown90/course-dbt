@@ -1,4 +1,10 @@
-{{ config (materialized = 'table' )}}
+{{ 
+    config( 
+        materialized = 'table'
+    )
+}}
+
+{%- set events = ['page_views', 'add_to_carts', 'checkouts', 'packages_shipped']%}
 
 with event as
 (
@@ -24,12 +30,8 @@ with event as
         , min(created_at) as session_started_at
         , max(created_at) as session_ended_at
         {%- for event in events %}
-        , sum(case when event_name = '{{ event }}') then 1 else 0 end) as {{ event }}
-        {%-end for events %}
-        , sum(case when event.event_type = 'page_view' then 1 else 0 end) as page_views
-        , sum(case when event.event_type = 'add_to_cart' then 1 else 0 end) as add_to_carts
-        , sum(case when event.event_type = 'checkout' then 1 else 0 end) as checkouts
-        , sum(case when event.event_type = 'package_shipped' then 1 else 0 end) as packages_shipped
+        , sum(case when event_type = '{{ event }}' then 1 else 0 end) as {{ event }}
+        {%- endfor %}
     from event
     left join order_items
         on event.order_id = order_items.order_id

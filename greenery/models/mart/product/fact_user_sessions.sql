@@ -11,7 +11,7 @@ select
     , page_views
     , add_to_carts
     , checkouts
-    , packages_shipped
+    , package_shippeds
     , u.first_name
     , u.last_name
     , u.email

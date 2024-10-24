@@ -11,7 +11,11 @@ What is our conversion rate by product?
 
 Create a macro to simplify part of a model(s). Think about what would improve the usability or modularity of your code by applying a macro. Large case statements, or blocks of SQL that are often repeated make great candidates. Document the macro(s) using a .yml file in the macros directory.
 
-Answer: I decided to group this together with my installation of dbt-utils. I thought the best thing I could do would be to remove case when statements around event types, and instead have them automatically populate through a macro. I installed the dbt-utils package as part of Part 5, and then will use a macro from that package to accomplish this.
+Answer: 
+
+I decided to group this together with my installation of dbt-utils. I thought the best thing I could do would be to remove case when statements around event types, and instead have them automatically populate through a macro. I installed the dbt-utils package as part of Part 5, and then will used a macro from that package to accomplish this.
+
+In the end there was really only one case when statement block I could simplify in what I had set up, so I chose to use the dbt-utils.get_column_values macro to return the event types in int_session_events and added the macro in the macros folder as event_types.sql. This will also make it simpler in the future if additional events are added to the product funnel, which is probably unavoidable given the current simplicity of the funnel.
 
 
 ## Part 3: We’re starting to think about granting permissions to our dbt models in our snowflake database so that other roles can have access to them. Add a post hook to your project to apply grants to the role “reporting”. You can use the grant macro example from this week!
@@ -21,7 +25,7 @@ Answer: I decided to group this together with my installation of dbt-utils. I th
 
 ## Part 4:  After learning about dbt packages, we want to try one out and apply some macros or tests. Install a package (i.e. dbt-utils, dbt-expectations) and apply one or more of the macros to your project
 
-
+See part 3! I downloaded dbt-utils and used the get_column_values function from that package.A
 
 
 
