@@ -35,8 +35,14 @@ Please create any additional dbt models needed to help answer these questions fr
 
 Use an exposure on your product analytics model to represent that this is being used in downstream BI tools. Please reference the course content if you have questions.
 
+ANSWER:
 
+I feel that I already have a model that would be sufficient to meet the request from Director of Product above. The fact_user_sessions model in the product folder in my mart is actually very well set up to be manipulated in a BI tool like Sigma. Not only does that model count up, by session_id, the number of "page views", "add to carts" and "checkouts". At the same time, I made sure to add both user detail (like account created date or state of user) as well as product detail (like product name) that end users may want to see sessions broken out by. This counts of actions can be used to create conversion rates, which can then be shown in bar charts broken down by the dimensions I named above or by type of conversion to see where the largest percentage of users "fall off", or it can be used to create the funnel visual that Jake showed during the walk-through.
 
+At the same time, because the model also includes timestamps like account_created_date, session_started_at and session_ended_at, I could also create an over time view of conversion, allowing users (perhaps) to show the conversion rate they're most interested in over time, cohorted by timestamp of interest to them. That being said, the answers to the specific questions the Director of Product asked are below, and the SQL I used to get that from fact_user_sessions is below the questions / answers.
+
+- How are our users moving through the product funnel?
+- Which steps in the funnel have largest drop off points?
 
 
 
