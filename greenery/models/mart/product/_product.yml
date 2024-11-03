@@ -2,6 +2,14 @@ version: 2
 
 models:
 
+  - name: fact_conversion_rate
+    description: table showing levels of the product funnel for a session.
+    columns:
+      - name: session_id
+        tests:
+          - not_null
+          - unique
+
   - name: fact_user_sessions
     description: table summarizing page view events
     columns:

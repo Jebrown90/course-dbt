@@ -12,60 +12,34 @@ The above six products had the most fluctuation in inventory. The remaining plan
 
 
 
-## Part 2. Modeling challenge
+## Part 2. Modeling challenge. Let’s say that the Director of Product at greenery comes to us (the head Analytics Engineer) and asks some questions: How are our users moving through the product funnel? Which steps in the funnel have largest drop off points?
 
-Let’s say that the Director of Product at greenery comes to us (the head Analytics Engineer) and asks some questions:
-
-- How are our users moving through the product funnel?
-- Which steps in the funnel have largest drop off points?
-
-Product funnel is defined with 3 levels for our dataset:
-
-- Sessions with any event of type page_view
-- Sessions with any event of type add_to_cart
-- Sessions with any event of type checkout
-
-They need to understand how the product funnel is performing to set the roadmap for the next quarter. The Product and Engineering teams are asking what their projects will be, and they want to make data-informed decisions. Thankfully, we can help using our data, and modeling it with dbt!
-
-In addition to answering these questions right now, we want to be able to answer them at any time. The Product and Engineering teams will want to track how they are improving these metrics on an ongoing basis. As such, we need to think about how we can model the data in a way that allows us to set up reporting for the long-term tracking of our goals.
-
-We’ll also want to make sure that any model feeding into this report is defined in an exposure (which we’ll cover in this week’s materials).
-
-Please create any additional dbt models needed to help answer these questions from our product team, and put your answers in a README in your repo.
+We’ll also want to make sure that any model feeding into this report is defined in an exposure (which we’ll cover in this week’s materials)
 
 Use an exposure on your product analytics model to represent that this is being used in downstream BI tools. Please reference the course content if you have questions.
 
 ANSWER:
 
-I feel that I already have a model that would be sufficient to meet the request from Director of Product above. The fact_user_sessions model in the product folder in my mart is actually very well set up to be manipulated in a BI tool like Sigma. Not only does that model count up, by session_id, the number of "page views", "add to carts" and "checkouts". At the same time, I made sure to add both user detail (like account created date or state of user) as well as product detail (like product name) that end users may want to see sessions broken out by. This counts of actions can be used to create conversion rates, which can then be shown in bar charts broken down by the dimensions I named above or by type of conversion to see where the largest percentage of users "fall off", or it can be used to create the funnel visual that Jake showed during the walk-through.
+To answer the questions from the Director of Product above, I created a model called fact_conversion_rate. This model shows session_id, product_name, state and session_started_at, and adds in session_id in additional columns for each level of the product funnel - "page views", "add to carts" and "checkouts" - where that action took place for a given session. Count distincts of session_ids in these product funnel action columns can then be used to create conversion rates within the BI tool, which can then be shown in bar charts broken down by the dimensions I named above or by type of conversion to see where the largest percentage of users "fall off", or it can be used to create the funnel visual that Jake showed during the walk-through.
 
-At the same time, because the model also includes timestamps like account_created_date, session_started_at and session_ended_at, I could also create an over time view of conversion, allowing users (perhaps) to show the conversion rate they're most interested in over time, cohorted by timestamp of interest to them. That being said, the answers to the specific questions the Director of Product asked are below, and the SQL I used to get that from fact_user_sessions is below the questions / answers.
+At the same time, because the model also includes timestamps like account_created_date, session_started_at and session_ended_at, I could also create an over time view of conversion, allowing users to show the conversion rate they're most interested in over time, cohorted by timestamp of interest to them. That being said, the answers to the specific questions the Director of Product asked are below, and the SQL I used to get that from fact_user_sessions is below the questions / answers.
 
 - How are our users moving through the product funnel?
+Users are moving pretty consistently through the funnel - about 81% of sessions see an add to cart event, and about 77% of sessions see a checkout event. So those are pretty similar. 
+
 - Which steps in the funnel have largest drop off points?
+The checkout step technically has the largest dropoff point, but it's not much more of a drop off than the add to cart step. The next questions from the Director of Product would probably be - how does this differ by state? By product? The model allows for pulling that detail through to a BI tool, which would allow analysts to provide output for those additional questions, not limiting them to just showing aggregate conversion rates.
 
+with counts as
+(
+select
+count(distinct(page_view_session_id)) as pageview
+,count(distinct(add_to_cart_session_id)) as addtocart
+,count(distinct(checkout_session_id)) as checkout
+from fact_conversion_rate
+)
 
-
-## Part 3: Reflection questions -- please answer 3A or 3B, or both!
-
-## 3A. dbt next steps for you. Reflecting on your learning in this class...
-
-## if your organization is thinking about using dbt, how would you pitch the value of dbt/analytics engineering to a decision maker at your organization?
-
-We already use DBT, and I've been a very strong proponent of continuing to do so, regardless of whatever other tools we onboard, as it greatly increases the flexibility of the team in being able to approach data, and allows non-Data Engineers to deliver data output more quickly and easily.
-
-## if your organization is using dbt, what are 1-2 things you might do differently / recommend to your organization based on learning from this course?
-
-I think the biggest thing I would recommend is strategic use of macros to save on costs, as well as the standardizing of views/table usage (i.e., assigning table status to a whole schema of models, and not assigning view or table to individual models). I would also recommend exposures, as we currently just sort of have that in my mind and the mind of our Data Engineering Manager. That needs to be recorded somewhere!
-
-For the latter, we kind of just do whatever, whereas I think it really makes the most sense for int and fact/dimension models to be tables, as it makes it quicker for users to interact with them. I'll be making that happen in my org!
-
-## if you are thinking about moving to analytics engineering, what skills have you picked that give you the most confidence in pursuing this next step?
-
-I am the Analytics Engineer at my org - I think what helps about this course is getting familiar with accessing and using dbt docs to help with working through any issues that arise.
-
-## 3B. Setting up for production / scheduled dbt run of your project And finally, before you fly free into the dbt night, we will take a step back and reflect: after learning about the various options for dbt deployment and seeing your final dbt project, how would you go about setting up a production/scheduled dbt run of your project in an ideal state? You don’t have to actually set anything up - just jot down what you would do and why and post in a README file.
-
-I would set up staging, int, and fact/dimension models. I would want to use a tool to ingest and orchestrate that ingest (Airflow, Dagster, or something like that). Depending on the need, I would likely have an every 3, 6, 12, or 24 hour ingest. I would want to make sure that the "first" ingest of the day takes place around 4am so that those checking data first thing in the morning get fresh data.
-
-Hints: what steps would you have? Which orchestration tool(s) would you be interested in using? What schedule would you run your project on? Which metadata would you be interested in using? How/why would you use the specific metadata? , etc.
+select 
+addtocart/pageview as conversion_to_add_to_cart
+, checkout/addtocart as conversion_checkout
+from counts
